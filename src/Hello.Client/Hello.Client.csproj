@@ -11,7 +11,8 @@
     <PackageReference Include="Pivotal.Discovery.ClientCore" Version="2.1.1" />
     <PackageReference Include="Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore" Version="2.1.1" />
     <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore" Version="2.1.1" />
-    <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
+    <PackageReference Include="Steeltoe.Extensions.Configuration.ConfigServerCore" Version="2.1.1" />
+    <PackageReference Include="Steeltoe.Management.CloudFoundryCore" Version="2.1.1" />
     <PackageReference Include="Steeltoe.CircuitBreaker.HystrixCore" Version="2.1.1" />
     <PackageReference Include="Steeltoe.Discovery.ClientCore" Version="2.1.1" />
   </ItemGroup>

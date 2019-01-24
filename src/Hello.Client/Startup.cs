@@ -10,6 +10,7 @@ using Steeltoe.CircuitBreaker.Hystrix;
 using Hello.Client.Commands.JokeCommands;
 using Steeltoe.Common.Http.Discovery;
 using Pivotal.Discovery.Client;
+using Steeltoe.Extensions.Configuration.ConfigServer;
 
 namespace Hello.Client
 {
@@ -25,6 +26,10 @@ namespace Hello.Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Optional:  Adds IConfiguration and IConfigurationRoot to service container
+            services.AddConfiguration(Configuration);
+
             //Add Eureka for Discovery services
             services.AddDiscoveryClient(Configuration);
 
@@ -68,7 +73,7 @@ namespace Hello.Client
             app.UseDeveloperExceptionPage();
             app.UseHystrixRequestContext();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseDiscoveryClient();
 

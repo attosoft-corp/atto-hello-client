@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
+using Steeltoe.Extensions.Configuration.ConfigServer;
 
 namespace Hello.Client
 {
@@ -23,17 +24,8 @@ namespace Hello.Client
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseUrls("http://*:5010")
-                .UseKestrel(options =>
-            {
-                options.AddServerHeader = false;
-                options.ConfigureHttpsDefaults(x =>
-                {
-                    x.SslProtocols = SslProtocols.None;
-                    x.CheckCertificateRevocation = false;
-                    x.ClientCertificateMode = ClientCertificateMode.NoCertificate;
-                    x.HandshakeTimeout = new TimeSpan(1, 0, 0);
-                });
-            })
+                .AddConfigServer()
+            .AddCloudFoundry()
                 .UseStartup<Startup>();
     }
 }

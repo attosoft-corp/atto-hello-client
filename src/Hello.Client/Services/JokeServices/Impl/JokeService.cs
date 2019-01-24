@@ -20,6 +20,7 @@ namespace Hello.Client.Services.JokeServices.Impl
         }
         public async Task<JokeResponse> GetJokeAsync()
         {
+            
             var response = await _httpClient.GetAsync("/api/LegacyJoke");
 
             var content = await response.Content.ReadAsStringAsync();
