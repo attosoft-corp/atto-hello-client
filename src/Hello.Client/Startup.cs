@@ -26,7 +26,6 @@ namespace Hello.Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             // Optional:  Adds IConfiguration and IConfigurationRoot to service container
             services.AddConfiguration(Configuration);
 
@@ -70,10 +69,11 @@ namespace Hello.Client
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+        
             app.UseDeveloperExceptionPage();
             app.UseHystrixRequestContext();
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseDiscoveryClient();
 
