@@ -45,7 +45,7 @@ namespace Hello.Client
             services.AddHttpClient("joke-service", c =>
             {
                 // here we can add services name from eureka.
-                c.BaseAddress = new Uri("http://hello-service:5000");
+                c.BaseAddress = new Uri("http://atto-hello-service.home.svc:8080");
 
             }).AddHttpMessageHandler<DiscoveryHttpMessageHandler>();
 
