@@ -1,13 +1,12 @@
 # Docker compose to build and run the eureka service
 version: '3'
 services:
-  hello-service:
+  hello-client:
     build:
       context: .
       dockerfile: Dockerfile
     ports: 
-      - "5010:80"
-      - "5011:443"
+      - "5010:8080"
 
 networks:
   default:
