@@ -26,7 +26,7 @@ namespace Hello.Client.Controllers
         }
         // GET api/values
         [HttpGet]
-        public async ActionResult<IEnumerable<string>> Get()
+        public async Task<ActionResult<IEnumerable<string>>> Get()
         {
             var config = _configuration["info:description"];
             var exchange = _configuration["info:exchange"];
