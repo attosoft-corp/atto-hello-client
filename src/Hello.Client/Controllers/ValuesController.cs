@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using RawRabbit;
 
 namespace Hello.Client.Controllers
 {
@@ -11,43 +13,58 @@ namespace Hello.Client.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<ValuesController> _logger;
+        private readonly IBusClient _client;
 
-        public ValuesController(IConfiguration configuration)
+
+        public ValuesController(IConfiguration configuration, ILogger<ValuesController> logger, IBusClient client)
         {
-            this.configuration = configuration;
+            _configuration = configuration;
+            _logger = logger;
+            _client = client;
         }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            var config = configuration["info:description"];
-            return new string[] { "value1", "value2", config };
-        }
+            var config = _configuration["info:description"];
+            var exchange = _configuration["info:exchange"];
+            var queue = _configuration["info:queue"];
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+            var message = new ValueRequest { Value = 6 };
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+            Parallel.For(0, 30, async i =>
+            {
+                var response = await _client.RequestAsync<ValueRequest, ValueResponse>(message, x =>
+                x.UseRequestConfiguration(r =>
+                {
+                    r.PublishRequest(pr => pr.OnExchange(exchange));
+                    r.ConsumeResponse(cr =>
+                    {
+                        cr.FromDeclaredQueue(t => t.WithName(queue));
+                        cr.OnDeclaredExchange(q => q.WithName(exchange));
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+                    });
+                }));
+                _logger.LogInformation($"{response.Value} : {i} ");
+            });
+
+
+            return new string[] { "value1", "value2", config, exchange, queue };
+
+
         }
+    }
+
+    public class ValueResponse
+    {
+        public string Value { get; set; }
+    }
+
+    public class ValueRequest
+    {
+        public int Value { get; set; }
     }
 }

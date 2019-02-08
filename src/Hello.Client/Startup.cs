@@ -12,6 +12,11 @@ using Steeltoe.Common.Http.Discovery;
 using Pivotal.Discovery.Client;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 using Hello.Client.Configurations;
+using RawRabbit.Instantiation;
+using System.IO;
+using RawRabbit.Configuration;
+using RawRabbit.Enrichers.GlobalExecutionId;
+using RawRabbit;
 
 namespace Hello.Client
 {
@@ -33,7 +38,7 @@ namespace Hello.Client
             services.AddConfiguration(Configuration);
 
             //Add Eureka for Discovery services
-            services.AddDiscoveryClient(Configuration);
+            //services.AddDiscoveryClient(Configuration);
 
             //Add Command Joke to container
             services.AddHystrixCommand<GetJokeCommand>("JokeCommand", Configuration);
@@ -54,6 +59,18 @@ namespace Hello.Client
             // Add Hystrix metrics stream to enable monitoring 
             services.AddHystrixMetricsStream(Configuration);
 
+
+
+            var client = RawRabbitFactory.CreateSingleton(new RawRabbitOptions
+            {
+                ClientConfiguration = Configuration.GetSection("RawRabbit").Get<RawRabbitConfiguration>(),
+                Plugins = p => p
+                    .UseGlobalExecutionId()
+            });
+
+            services.AddSingleton<IBusClient>(client);
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +90,7 @@ namespace Hello.Client
 
             app.UseHttpsRedirection();
 
-            app.UseDiscoveryClient();
+            //app.UseDiscoveryClient();
 
             app.UseMvc();
 
