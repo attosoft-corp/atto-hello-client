@@ -43,7 +43,7 @@ namespace Hello.Client.Controllers
                     r.PublishRequest(pr => pr.OnExchange(exchange));
                     r.ConsumeResponse(cr =>
                     {
-                        cr.FromDeclaredQueue(t => t.WithName(queue));
+                        cr.FromDeclaredQueue(t => t.WithName($"{queue}|{Guid.NewGuid()}").WithDurability(false));
                         cr.OnDeclaredExchange(q => q.WithName(exchange));
 
                     });
@@ -52,7 +52,8 @@ namespace Hello.Client.Controllers
                 list.Add($"{response.Value} : {i} ");
                 _logger.LogInformation($"{response.Value} : {i} ");
             }
-            
+
+            list.Add(Environment.MachineName);
             return list;
 
 
