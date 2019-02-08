@@ -26,7 +26,7 @@ namespace Hello.Client.Controllers
         }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async ActionResult<IEnumerable<string>> Get()
         {
             var config = _configuration["info:description"];
             var exchange = _configuration["info:exchange"];
@@ -34,8 +34,8 @@ namespace Hello.Client.Controllers
 
 
             var message = new ValueRequest { Value = 6 };
-
-            Parallel.For(0, 30, async i =>
+            var list = new List<string>();
+            for (int i = 0; i < 30; i++)
             {
                 var response = await _client.RequestAsync<ValueRequest, ValueResponse>(message, x =>
                 x.UseRequestConfiguration(r =>
@@ -48,11 +48,12 @@ namespace Hello.Client.Controllers
 
                     });
                 }));
+
+                list.Add($"{response.Value} : {i} ");
                 _logger.LogInformation($"{response.Value} : {i} ");
-            });
-
-
-            return new string[] { "value1", "value2", config, exchange, queue };
+            }
+            
+            return list;
 
 
         }
