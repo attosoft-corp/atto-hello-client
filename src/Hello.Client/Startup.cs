@@ -38,7 +38,7 @@ namespace Hello.Client
             services.AddConfiguration(Configuration);
 
             //Add Eureka for Discovery services
-            //services.AddDiscoveryClient(Configuration);
+            services.AddDiscoveryClient(Configuration);
 
             //Add Command Joke to container
             services.AddHystrixCommand<GetJokeCommand>("JokeCommand", Configuration);
@@ -90,7 +90,7 @@ namespace Hello.Client
 
             app.UseHttpsRedirection();
 
-            //app.UseDiscoveryClient();
+            app.UseDiscoveryClient();
 
             app.UseMvc();
 
