@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hello.Client</name>
+    </assembly>
+    <members>
+        <member name="T:Hello.Client.Controllers.JokeController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Hello.Client.Controllers.JokeController.#ctor(Hello.Client.Services.JokeServices.IJokeService,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{Hello.Client.Controllers.JokeController})">
+            <summary>
+            
+            </summary>
+            <param name="jokeService"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Hello.Client.Controllers.JokeController.GetJokeAsync">
+            
+        </member>
+        <member name="M:Hello.Client.Controllers.JokeController.GetJoke(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="teste"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

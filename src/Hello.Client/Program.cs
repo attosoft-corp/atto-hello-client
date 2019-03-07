@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Authentication;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Atto.Common.Core.Program;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Https;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Steeltoe.Extensions.Configuration.CloudFoundry;
-using Steeltoe.Extensions.Configuration.ConfigServer;
 
 namespace Hello.Client
 {
+
     public class Program
     {
         public static void Main(string[] args)
@@ -22,8 +12,7 @@ namespace Hello.Client
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder()
-                .AddConfigServer()
+            HostCore.CreateWebHostBuilder(args)
                 .UseStartup<Startup>();
     }
 }

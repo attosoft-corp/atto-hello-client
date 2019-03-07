@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Hello.Client.Services.JokeServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using RawRabbit;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hello.Client.Controllers
 {
@@ -15,58 +14,22 @@ namespace Hello.Client.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<ValuesController> _logger;
-        private readonly IBusClient _client;
 
-
-        public ValuesController(IConfiguration configuration, ILogger<ValuesController> logger, IBusClient client)
+        public ValuesController(IConfiguration configuration, ILogger<ValuesController> logger)
         {
             _configuration = configuration;
             _logger = logger;
-            _client = client;
         }
+
         // GET api/values
         [HttpGet]
         public async Task<ActionResult<IEnumerable<string>>> Get()
         {
             var config = _configuration["info:description"];
-            var exchange = _configuration["info:exchange"];
-            var queue = _configuration["info:queue"];
 
+            _logger.LogInformation("Hello, {Name}, from NLog!", Environment.UserName);
 
-            var message = new ValueRequest { Value = 6 };
-            var list = new List<string>();
-            for (int i = 0; i < 30; i++)
-            {
-                var response = await _client.RequestAsync<ValueRequest, ValueResponse>(message, x =>
-                x.UseRequestConfiguration(r =>
-                {
-                    r.PublishRequest(pr => pr.OnExchange(exchange));
-                    r.ConsumeResponse(cr =>
-                    {
-                        cr.FromDeclaredQueue(t => t.WithName($"{queue}|{Environment.MachineName}").WithDurability(false).WithAutoDelete(true));
-                        cr.OnDeclaredExchange(q => q.WithName(exchange));
-
-                    });
-                }));
-
-                list.Add($"{response.Value} : {i} ");
-                _logger.LogInformation($"{response.Value} : {i} ");
-            }
-
-            list.Add(Environment.MachineName);
-            return list;
-
-
+            return await Task.FromResult(Ok(new List<string> { config }));
         }
-    }
-
-    public class ValueResponse
-    {
-        public string Value { get; set; }
-    }
-
-    public class ValueRequest
-    {
-        public int Value { get; set; }
     }
 }
