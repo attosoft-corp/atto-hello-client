@@ -6,8 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atto.Common.Core" Version="1.0.0-alpha" />
+    <!--<PackageReference Include="Atto.Common.Core" Version="1.0.0-alpha" />-->
     <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\atto-common-core\src\Atto.Common.Core\Atto.Common.Core\Atto.Common.Core.csproj" />
   </ItemGroup>
 
 

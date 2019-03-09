@@ -1,4 +1,4 @@
-﻿using Atto.Common.Core.Program;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Hello.Client
@@ -12,7 +12,7 @@ namespace Hello.Client
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            HostCore.CreateWebHostBuilder(args)
+            WebHost.CreateDefaultBuilder(args).UseAttoSoft()
                 .UseStartup<Startup>();
     }
 }
